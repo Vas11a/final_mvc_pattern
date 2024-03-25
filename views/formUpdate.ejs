@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Update task</title>
+</head>
+
+<body>
+    <div class="flex flex-col items-center gap-5 p-10">
+        <div class="flex gap-5 items-center">
+            <h1 class="font-semibold text-3xl">Update task</h1>
+            <a href="/" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Back to tasks</a>
+        </div>
+        <form class="p-5 border-2 border-gray-300 rounded-lg" action="/task/<%= task.id %>/update" method="POST">
+            <div class="flex flex-col gap-2">
+                <label for="description" class="text-xl">Task</label>
+                <input class="border-2 border-gray-300 text-xl rounded-md px-2 py-1" type="text" name="description"
+                    id="description" value="<%= task.description %>">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="date" class="text-xl">Date</label>
+                <input class="border-2 border-gray-300 text-xl rounded-md px-2 py-1" type="date" name="date" id="date"
+                    value="<%= task.date %>">
+            </div>
+            <div class="flex flex-col gap-2 pt-2">
+                <label for="status" class="text-xl">Status</label>
+                <select id="status" name="status" class="border-2 border-gray-300 text-xl rounded-md px-2 py-1">
+                    <option value="Dont started" <%=task.status==='Dont started' ? 'selected' : '' %>>Dont started
+                    </option>
+                    <option value="In progress" <%=task.status==='In progress' ? 'selected' : '' %>>In progress</option>
+                    <option value="Done" <%=task.status==='Done' ? 'selected' : '' %>>Done</option>
+                </select>
+            </div>
+            <div class=" flex justify-center gap-5">
+                <button type="submit"
+                    class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
+                <button id="remove-task-btn" type="button"
+                    class="mt-5 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    onclick="removeTask()">Remove task</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        async function removeTask() {
+            try {
+                const taskId = "<%= task.id %>";
+                const response = await fetch(`/task/${taskId}`, {
+                    method: 'DELETE'
+                });
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+    
+</body>
+
+</html>
